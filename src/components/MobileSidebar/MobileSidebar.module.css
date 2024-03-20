@@ -1,0 +1,58 @@
+.sidebarContainer{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    display: none;
+    flex-direction: column;
+
+    background-color: var(--primary-color);
+}
+
+.sidebarContainer > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 1rem 1.5rem;
+}
+
+.sidebarContainer > header > button{
+    background-color: transparent;
+    border: none;
+    color: #FFF
+}
+
+.mobileNavbar {
+    display: flex;
+    flex-direction: column;
+
+    height: 100vh;
+}
+
+.mobileNavbar > a {
+    width: 100%;
+    padding: 1rem;
+    border-top: 1px solid #FFF
+}
+
+.mobileNavbar > a:last-of-type {
+    margin: auto auto 0;
+
+    border: none;
+
+    background-color: #FFF;
+    color: var(--primary-color);
+
+    text-align: center;
+
+    font-weight: 700;
+}
+
+@media(max-width: 620px){
+    .sidebarContainer{
+        display: flex
+    }
+}
