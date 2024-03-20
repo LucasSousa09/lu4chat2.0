@@ -15,14 +15,6 @@
     margin-right: 0
 }
 
-div > .link {
-    padding: .5rem 1rem;
-
-    border-radius: 4px;
-
-    background-color: #FFF;
-    color: #1078C2;
-}
 
 @media (max-width: 840px) {
     .link{
@@ -32,18 +24,5 @@ div > .link {
 
     .link:first-of-type:not(div > a){
         margin-right: 1.5rem;
-    }
-}
-
-@media (max-width: 620px) {
-    /* Only show first of type link and the links that are inside the div element */
-    .link:not(:first-of-type):not(div > a){
-        display: none;
-    }   
-}
-
-@media (max-width: 374px) {
-    div > .link{
-        display: none
     }
 }

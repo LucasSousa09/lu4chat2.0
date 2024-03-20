@@ -13,6 +13,7 @@
 .button{
     border: none;
     background-color: transparent;
+    cursor: pointer;
 
     display: none;
 }
@@ -24,12 +25,28 @@
     width: 100%;
 }
 
+.logoImgMini{
+    display: none;
+}
+
 .nav > div {
+    display: flex;
+    flex: 1;
+    align-items: center;
+}
+
+.userLinks{
     margin-left: auto;
 }
 
-.logoImgMini {
-    display: none
+/* Try to add this stylyng to NavLink later */
+.userLinks > a {
+    padding: .5rem 1rem;
+
+    border-radius: 4px;
+
+    background-color: #FFF;
+    color: var(--primary-color);
 }
 
 @media (max-width: 840px) {
@@ -54,5 +71,16 @@
     .button {
         margin-right: 1.5rem;
         display: block
+    }
+
+    /* Try to add this stylyng to NavLink later */
+    .nav > div > a{
+        display: none        
+    }
+}
+
+@media(max-width: 374px){
+    .userLinks{
+        display: none
     }
 }
