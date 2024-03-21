@@ -13,7 +13,7 @@ export function HomePage(){
                     <span className={styles.highlighted + " " + styles.inline}>on-line</span>
                     <span className={styles.inline}>para você</span>
 
-                    <a href="">Conecte-se ao futuro</a>
+                    <a href="/login">Conecte-se ao futuro</a>
                 </div>
         </div>
     )
