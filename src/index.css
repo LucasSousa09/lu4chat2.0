@@ -6,6 +6,11 @@
     font-family: "Poppins", sans-serif
 }
 
+button {
+    cursor: pointer
+}
+
 :root{
-    --primary-color: #1078C2
+    --primary-color: #1078C2;
+    --primary-darker: #083D64
 }
