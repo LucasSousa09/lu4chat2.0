@@ -1,0 +1,45 @@
+.messagesContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    color: var(--primary-color);
+
+    padding: 24px;
+}
+
+.messagesContainer > h1 {
+    font-size: 24px;
+    font-weight: 400;
+
+    margin-bottom: 32px;
+}
+
+.message{
+    display: flex;
+    flex-direction: column;
+
+    color: #FFF;
+    background-color: var(--primary-darker);
+
+    width: 50%;
+
+    padding: 8px;
+
+    margin-bottom: 16px;
+
+    border-radius: 4px    
+}
+
+.message:nth-child(odd){
+    color: var(--primary-darker);
+    background-color: transparent;
+    border: 1px solid var(--primary-darker)
+}
+
+.messageSender {
+    color: var(--primary-darker);
+    background-color: #8DB8D8;
+
+    margin-left: auto;
+}

@@ -1,4 +1,10 @@
 .formBox{
+    display: flex;
+    flex-direction: column;
+
+    max-width: 500px;
+    width: 100%;
+
     padding: 48px 68px;
     box-shadow: 0 0 3px 2px rgba(16,120,194,0.4);
 
@@ -20,6 +26,8 @@
 .form{
     display: flex;
     flex-direction: column;
+
+    margin-bottom: 12px;
 }
 
 .form > label {
@@ -52,7 +60,7 @@
     margin-bottom: 24px;
 }
 
-.form > button {
+.formBox button {
     background-color: rgba(16,120,194,.8);
     color: #FFF;
 
@@ -65,10 +73,19 @@
     font-weight: 500;
 }
 
-.form > button:hover {
+.formBox button:hover {
     background-color: rgba(16,120,194,.7);
 
     transition: background-color 0.2s ease;
+}
+
+.formBox > span {
+    width: 100%;
+    height: 2px;
+
+    background: rgba(16,120,194,.4);
+
+    margin-bottom: 12px;
 }
 
 @media(max-width: 620px){
@@ -85,7 +102,7 @@
         font-size: 16px;
     }
 
-    .form > button {
+    .formBox button {
         font-size: 18px;
     }
 }
