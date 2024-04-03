@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { toast } from 'react-toastify';
 import { FormEvent, useState } from "react";
+import { Info } from '@phosphor-icons/react';
+import { FirebaseError } from 'firebase/app';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
@@ -10,7 +12,12 @@ import { FormContainer } from "../components/FormContainer";
 
 import styles from './Register&LoginPages.module.css'
 
+import { api } from '../libs/axios';
+
 const registerSchema = z.object({
+    username: z.string()
+                .min(3, 'O nome de usuário deve ter no minímo 3 characteres')
+                .max(20, 'O nome de usuário deve ter no máximo 20 characteres'),
     email: z.string().email("Email Inválido"),
     password: z.string()
         .min(6, 'A senha deve ter no minímo 6 characteres')
@@ -28,38 +35,70 @@ export function RegisterPage(){
     const navigate = useNavigate()
 
     const [email, setEmail] = useState("")
+    const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirmation, setPasswordConfirmation] = useState("")
 
-    async function createUser(evt: FormEvent){
+    async function createUserWithCredentials(evt: FormEvent){
         evt.preventDefault()
 
         try{
             registerSchema.parse({
                 email,
                 password,
+                username,
                 passwordConfirmation
             })
 
            await createUserWithEmailAndPassword(auth, email, password)
 
-           navigate("/public-chats")
+           const res = await api.post("/create-user", {data: {userEmail: email, userName: username}})
+           
+           if(res.status === 201){
+                toast.success("Usuário Criado com sucesso")
+                navigate("/public-chats")
+            }
+
+            else{
+                console.error(res.data)
+                toast.error("Algo de errado aconteceu, tente novamente mais tarde!")
+            }
+
         }
         catch(err){
             if(err instanceof z.ZodError){
                 toast.error(err.issues[0].message)
             }
-            else{
-                console.error(err)
+
+            if(err instanceof FirebaseError){
+                if(err.code === "auth/email-already-in-use"){
+                    toast.error("Esse email já foi cadastrado anteriormente")
+                }
             }
         }
     }
 
     async function signInWithGoogle(){
         try{
-            await signInWithPopup(auth, googleProvider)
+            const authRes = await signInWithPopup(auth, googleProvider)
 
-            navigate("/public-chats")
+            console.log(authRes)
+            
+            const res = await api.post('/create-user', {data: {userEmail: authRes.user.email, userName: authRes.user.displayName}})
+            
+            if(res.status === 201){
+                toast.success("Usuário Criado com sucesso")
+                navigate("/public-chats")
+            }
+            else if(res.status === 200){
+                toast.success("Usuário Logado com sucesso")
+                navigate("/my-chats")
+            }
+            else{
+                console.error(res.data)
+                toast.error("Algo de errado aconteceu, tente novamente mais tarde!")
+            }
+
         }
         catch(err){
             console.error(err)
@@ -69,8 +108,24 @@ export function RegisterPage(){
     return (
         <FormContainer>
             <div className={styles.formBox}>
-                <strong> Crie uma conta </strong>
+                <header> 
+                    <strong>Crie uma conta</strong>
+                    <div className={styles.infoBox}>
+                        <Info weight="bold" size={24}/>
+                        <div className={styles.infoTooltip}>
+                            <strong>Aviso</strong>
+                            <ul>
+                               <li>1 - É possível realizar o Cadastro utilizando apenas um método</li> 
+                               <li>2 - Caso o cadastro seja realizado utilizando Email e Senha, é possível alterar o método para login com Google, mas o contrário não é possível</li>
+                            </ul>
+                        </div>
+                    </div>
+                </header>
                 <form className={styles.form} action="">
+                    <label htmlFor="username">Nome de Usuário</label>
+                    <input id="username" type="text"  onChange={(evt) => setUsername(evt.target.value)}/>
+
+
                     <label htmlFor="email">Email</label>
                     <input id="email" type="text"  onChange={(evt) => setEmail(evt.target.value)}/>
 
@@ -80,7 +135,7 @@ export function RegisterPage(){
                     <label htmlFor="password-confirmation">Repita sua senha</label>
                     <input id="password-confirmation" type="password" onChange={(evt) => setPasswordConfirmation(evt.target.value)} />
 
-                    <button onClick={createUser} type="submit">
+                    <button onClick={createUserWithCredentials} type="submit">
                         Criar conta
                     </button>
                 </form>
