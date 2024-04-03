@@ -12,5 +12,7 @@ button {
 
 :root{
     --primary-color: #1078C2;
-    --primary-darker: #083D64
+    --primary-darker: #083D64;
+
+    --warning: rgb(223, 29, 71);
 }

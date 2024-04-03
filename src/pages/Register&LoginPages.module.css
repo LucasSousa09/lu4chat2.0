@@ -11,16 +11,69 @@
     border-radius: 8px;
 }
 
-.formBox > strong{
-    display: block;
-    margin-bottom: 24px;
+.formBox > header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+    gap: 16px;
+
+    margin-bottom: 24px;
+}
+
+.formBox > header > strong{
     color: rgba(16,120,194,.8);
 
     font-size: 24px;
     font-weight: 500;
 
     text-align: center
+}
+
+.infoBox{
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    color: var(--primary-color);
+    
+    cursor: pointer;
+}
+
+.infoBox > .infoTooltip {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 8px;
+
+    position: absolute;
+    top: 40px;
+    right: 50%;
+    transform: translateX(50%);
+
+    padding: 16px 32px;
+
+    border-radius: 4px;
+    box-shadow: 0 0 3px 2px rgba(223, 29, 71, 0.4);
+
+    color: var(--warning);
+    background-color: #FFF;
+
+    width: 320px;
+}
+
+.infoBox:hover > .infoTooltip{
+    display: flex
+}
+
+.infoBox > .infoTooltip > ul{
+    list-style: none;
+}
+
+.infoBox > .infoTooltip > ul> li:first-of-type{
+    margin-bottom: 8px;
 }
 
 .form{
@@ -94,7 +147,7 @@
         max-width: 90%
     }
 
-    .formBox > strong{
+    .formBox > div > strong{
         font-size: 20px;
     }
 
