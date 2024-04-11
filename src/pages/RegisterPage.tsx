@@ -50,9 +50,9 @@ export function RegisterPage(){
                 passwordConfirmation
             })
 
-           await createUserWithEmailAndPassword(auth, email, password)
+           const authRes = await createUserWithEmailAndPassword(auth, email, password)
 
-           const res = await api.post("/create-user", {data: {userEmail: email, userName: username}})
+           const res = await api.post("/create-user", {data: {userEmail: email, userName: username, userId: authRes.user.uid}})
            
            if(res.status === 201){
                 toast.success("Usuário Criado com sucesso")
@@ -84,7 +84,7 @@ export function RegisterPage(){
 
             console.log(authRes)
             
-            const res = await api.post('/create-user', {data: {userEmail: authRes.user.email, userName: authRes.user.displayName}})
+            const res = await api.post('/create-user', {data: {userEmail: authRes.user.email, userName: authRes.user.displayName, userId: authRes.user.uid}})
             
             if(res.status === 201){
                 toast.success("Usuário Criado com sucesso")
