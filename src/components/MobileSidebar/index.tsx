@@ -5,13 +5,24 @@ import { NavLink } from "../NavLink";
 import logoImg from '../../assets/logo_white.png'
 
 import styles from './MobileSidebar.module.css'
+import { SidebarContext } from '../../contexts/SidebarContext';
+import { useContext } from 'react';
+import { ModalContext } from '../../contexts/ModalContext';
 
-type MobileSidebarProps = {
-    isSidebarOpen: boolean,
-    closeSidebar: React.Dispatch<React.SetStateAction<boolean>>
-}
+export function MobileSidebar(){
+    const { setIsModalOpen } = useContext(ModalContext)
+    const { isSidebarOpen, setIsSidebarOpen } = useContext(SidebarContext)
 
-export function MobileSidebar({ isSidebarOpen, closeSidebar }: MobileSidebarProps){
+    function handleOpenModal(whichModalToOpen: "createRoom" | "enterRoom"){
+        if(whichModalToOpen === "createRoom"){
+            setIsModalOpen(state => (state === "createRoomModalIsOpen" ? null : "createRoomModalIsOpen"))
+        }
+        if(whichModalToOpen === "enterRoom"){
+            setIsModalOpen(state => (state === "enterRoomModalIsOpen" ? null : "enterRoomModalIsOpen"))
+        }
+        setIsSidebarOpen(false)
+    }
+
     return (
         <>
             {
@@ -22,7 +33,7 @@ export function MobileSidebar({ isSidebarOpen, closeSidebar }: MobileSidebarProp
                                 <img src={logoImg} alt="" />
                             </NavLink>
                             <button
-                                onClick={() => closeSidebar(state => !state)}
+                                onClick={() => setIsSidebarOpen(state => !state)}
                             >
                                 <X size={24} weight='bold' /> 
                             </button>
@@ -31,6 +42,8 @@ export function MobileSidebar({ isSidebarOpen, closeSidebar }: MobileSidebarProp
                             <NavLink linkTo="/my-chats">Conversas</NavLink>
                             <NavLink linkTo="/public-chats">Salas Públicas</NavLink>
                             <NavLink linkTo="/register">Criar Conta</NavLink>
+                            <button onClick={() => handleOpenModal("createRoom")}>Criar uma Sala</button>
+                            <button onClick={() => handleOpenModal("enterRoom")}>Entrar em uma Sala</button>
                             <NavLink linkTo="/login">Login</NavLink>
                         </nav>
                     </div>

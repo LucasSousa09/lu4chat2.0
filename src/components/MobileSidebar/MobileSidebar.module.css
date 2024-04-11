@@ -51,6 +51,26 @@
     font-weight: 700;
 }
 
+.mobileNavbar > button {
+    color: #FFF;
+    font-weight: 500;
+
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #FFF;
+
+    text-align: start;
+    padding: 1rem;
+}
+
+.mobileNavbar > button:hover {
+    text-shadow: 1px 1px 4px #FFF;
+}
+
+.mobileNavbar > button:first-of-type {
+    border-top: 1px solid #FFF;
+}
+
 @media(max-width: 620px){
     .sidebarContainer{
         display: flex
