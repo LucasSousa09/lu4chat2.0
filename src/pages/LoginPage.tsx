@@ -1,6 +1,7 @@
 import { z } from "zod"
 import { toast } from "react-toastify";
 import { FormEvent, useState } from "react";
+import { Info } from "@phosphor-icons/react";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
@@ -38,6 +39,7 @@ export function LoginPage(){
 
             await signInWithEmailAndPassword(auth, email, password)
 
+            toast.success("Usuário Logado com sucesso!")
             navigate("/my-chats")
         }
         catch(err){
@@ -51,9 +53,6 @@ export function LoginPage(){
                 if(err.code === "auth/too-many-requests"){
                     toast.error("Acesso temporiamente negado, devido à muitas tentivas de login malsucedidas")
                 }
-
-                console.log(err.code)
-                console.error(err.message)
             }
         }
     }
@@ -61,6 +60,7 @@ export function LoginPage(){
     async function signInWithGoogle(){
         try{
             await signInWithPopup(auth, googleProvider)
+            toast.success("Usuário Logado com sucesso!")
             navigate("/my-chats")
         }
         catch(err){
@@ -70,7 +70,19 @@ export function LoginPage(){
     return (
         <FormContainer>
             <div className={styles.formBox}>
-                <strong> Faça seu login </strong>
+                <header> 
+                    <strong>Faça o seu Login</strong>
+                    <div className={styles.infoBox}>
+                        <Info weight="bold" size={24}/>
+                        <div className={styles.infoTooltip}>
+                            <strong>Aviso</strong>
+                            <ul>
+                               <li>1 - É possível realizar o login utilizando apenas um método</li> 
+                               <li>2 - Caso o login seja realizado utilizando Email e Senha, é possível alterar o método para login com Google, mas o contrário não é possível</li>
+                            </ul>
+                        </div>
+                    </div>
+                </header>
                 <form className={styles.form} action="">
                     <label htmlFor="email">Email</label>
                     <input id="email" type="text" onChange={(evt) => setEmail(evt.target.value)}/>
