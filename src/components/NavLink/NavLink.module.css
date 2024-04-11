@@ -6,6 +6,10 @@
     margin-right: 1.5rem;
 }
 
+.link:hover{
+    text-shadow: 1px 1px 4px #FFF;
+}
+
 /* Select the first of type that is not inside a div */
 .link:first-of-type:not(div > a){
     margin-right: 3rem;

@@ -1,4 +1,7 @@
 import { ReactNode } from "react";
+
+import { Link } from 'react-router-dom'
+
 import styles from './NavLink.module.css'
 
 
@@ -9,8 +12,8 @@ type NavLinkProps = {
 
 export function NavLink({ children, linkTo }: NavLinkProps){
    return (
-        <a className={styles.link}  href={linkTo}>
+        <Link className={styles.link}  to={linkTo}>
             {children}
-        </a>
+        </Link>
    )
 }

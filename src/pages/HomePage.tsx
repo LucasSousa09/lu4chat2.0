@@ -1,6 +1,7 @@
 import styles from './HomePage.module.css'
 
 import heroImg from '../assets/hero-image.jpg'
+import { Link } from 'react-router-dom'
 
 export function HomePage(){
     return (
@@ -13,7 +14,7 @@ export function HomePage(){
                     <span className={styles.highlighted + " " + styles.inline}>on-line</span>
                     <span className={styles.inline}>para você</span>
 
-                    <a href="/login">Conecte-se ao futuro</a>
+                    <Link to="/login">Conecte-se ao futuro</Link>
                 </div>
         </div>
     )
