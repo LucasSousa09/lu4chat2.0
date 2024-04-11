@@ -26,7 +26,7 @@
 
     padding: 12px 16px;
 
-    font-weight: 700;
+    font-weight: 500;
     font-size: 1rem;
 }
 
@@ -42,9 +42,58 @@
 }
 
 .nav > div {
+    position: relative;
     display: flex;
     flex: 1;
     align-items: center;
+}
+
+.nav > div > button {
+    color: #FFF;
+    font-size: 1rem;
+    font-weight: 500;
+
+    margin-right: 1.5rem;
+
+    border: 0;
+    background-color: transparent;
+}
+
+.nav > div > button:hover{
+    text-shadow: 1px 1px 4px #FFF;
+}
+
+.chatOptions {
+    position: absolute;
+    top: 32px;
+    left: -65px;
+
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: .5rem;
+
+    padding: 12px;
+
+    background-color: var(--primary-color);
+    border-radius: 6px;
+
+    box-shadow: 0 0 3px 2px rgba(10, 0, 56, 0.4);
+}
+
+.chatOptions > button{
+    color: #FFF;
+    font-size: 1rem;
+    font-weight: 500;
+
+    margin-right: 1.5rem;
+
+    border: 0;
+    background-color: transparent;
+}
+
+.chatOptions > button:hover{
+    text-shadow: 1px 1px 4px #FFF;
 }
 
 .userLinks{
@@ -61,9 +110,17 @@
     color: var(--primary-color);
 }
 
+.userLinks > a:hover, .logoutButton:hover{
+    text-shadow: 1px 1px 4px var(--primary-color);
+}
+
 @media (max-width: 840px) {
     .header{
         height: 80px
+    }
+
+    .header button, .nav > div > button {
+        font-size: 14px;
     }
 
     .logoImg {
@@ -87,6 +144,10 @@
 
     /* Try to add this stylyng to NavLink later */
     .nav > div > a{
+        display: none        
+    }
+
+    .nav > div > button{
         display: none        
     }
 }

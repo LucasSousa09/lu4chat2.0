@@ -1,5 +1,6 @@
-import { useContext } from 'react'
 import { signOut } from 'firebase/auth'
+import { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ListDashes } from '@phosphor-icons/react'
 
 import { auth } from '../../libs/firebase-config'
@@ -9,17 +10,18 @@ import { NavLink } from "../NavLink"
 import logoImg from "../../assets/logo_white.png"
 import logoMini from "../../assets/logo_mini.png"
 
-import styles from "./Header.module.css"
-
 import { UserContext } from "../../contexts/UserContext"
-import { useNavigate } from 'react-router-dom'
+import { ModalContext } from '../../contexts/ModalContext'
 
-type HeaderProps = {
-    openSidebar: React.Dispatch<React.SetStateAction<boolean>>
-}
+import styles from "./Header.module.css"
+import { SidebarContext } from '../../contexts/SidebarContext'
 
-export function Header({ openSidebar }: HeaderProps ){
+export function Header(){
     const { user } = useContext(UserContext)
+    const { setIsSidebarOpen } = useContext(SidebarContext)
+    const { setIsModalOpen } = useContext(ModalContext)
+
+    const [openChatOptions, setOpenChatOptions] = useState(false)
 
     const navigate = useNavigate()
 
@@ -32,14 +34,23 @@ export function Header({ openSidebar }: HeaderProps ){
         catch(err){
             console.error(err)
         }
+    }
 
+    function handleOpenModal(whichModalToOpen: "createRoom" | "enterRoom"){
+        if(whichModalToOpen === "createRoom"){
+            setIsModalOpen(state => (state === "createRoomModalIsOpen" ? null : "createRoomModalIsOpen"))
+        }
+        if(whichModalToOpen === "enterRoom"){
+            setIsModalOpen(state => (state === "enterRoomModalIsOpen" ? null : "enterRoomModalIsOpen"))
+        }
+        setIsSidebarOpen(false)
     }
 
     return (
         <header className={styles.header}>
             <button 
                 className={styles.button}
-                onClick={() => openSidebar(true)}
+                onClick={() => setIsSidebarOpen(true)}
             >
                 <ListDashes color='#FFF' weight="bold" size={32} />
             </button>
@@ -49,7 +60,19 @@ export function Header({ openSidebar }: HeaderProps ){
                     <img className={styles.logoImgMini} src={logoMini} alt="" />
                 </NavLink>
                 <div>
-                    <NavLink linkTo="/my-chats">Conversas</NavLink>
+                    <button onClick={() => setOpenChatOptions(state => !state)}>
+                        Conversas
+                    </button>
+                    {
+                        openChatOptions ? (
+                            <div className={styles.chatOptions}>
+                                <NavLink linkTo='/my-chats' >Minhas Conversas</NavLink>
+                                <button onClick={() => handleOpenModal("createRoom")}>Criar Conversa</button>
+                                <button onClick={() => handleOpenModal("enterRoom")}>Entrar na conversas</button>
+                            </div>
+                        ) : null
+                    }
+
                     <NavLink linkTo="/public-chats">Salas Públicas</NavLink>
                     <div className={styles.userLinks}>
                         {
