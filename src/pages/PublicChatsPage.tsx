@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { ChatRoomInfo } from "../components/ChatRoomInfo"
+import { ChatRoomInfoPublic } from "../components/ChatRoomInfoPublic"
 import styles from "./PublicChatsPage.module.css"
 
 import { db } from '../libs/firebase-config' 
@@ -13,7 +13,7 @@ type Room = {
     messagesId: string,
     name: string,
     type: "public" | "private"
-}
+} | null
 
 export function PublicChatsPage(){
     const [chatRooms, setChatRooms] = useState<Room[]>([])
@@ -25,8 +25,11 @@ export function PublicChatsPage(){
             try{
                 const querySnapshot = await getDocs(roomsCollectionRef)
     
-                const rooms = querySnapshot.docs.map((doc) => {                   
-                    return {id: doc.id, ...doc.data()} as Room
+                const rooms = querySnapshot.docs.map((doc) => {
+                    if(doc.data().type === "public"){
+                        return {id: doc.id, ...doc.data()} as Room
+                    }
+                    return null
                 })
 
                 setChatRooms(rooms)  
@@ -37,7 +40,8 @@ export function PublicChatsPage(){
         }
 
         getRooms()
-    })
+        //Removing the depences array creates a infinite Loop
+    },[])
 
     return (
         <div className={styles.pageContainer}>
@@ -46,15 +50,20 @@ export function PublicChatsPage(){
 
                 <div className={styles.publicChatsContainer}>
                     {
-                        chatRooms.map(rooms => (
-                            <ChatRoomInfo 
-                                key={rooms.id}
-                                id={rooms.id} 
-                                roomName={rooms.name} 
-                                roomType={rooms.type}
-                                roomDescription={rooms.description} 
-                            />
-                        ))
+                        chatRooms.map(room => {
+                                if(room){
+                                    return (
+                                        <ChatRoomInfoPublic 
+                                            key={room.id}
+                                            id={room.id} 
+                                            roomName={room.name} 
+                                            roomType={room.type}
+                                            roomDescription={room.description} 
+                                        />
+                                    )
+                                }
+                                return null
+                            })
                     }
                 </div>
             </div>
