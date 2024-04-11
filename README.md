@@ -1,6 +1,6 @@
 # Lu4Chat 2.0
 
-Seu novo aplicativo de mensagens on-line completamete Responsivo
+Seu novo aplicativo de mensagens on-line completamente Responsivo
 
 ## Ferramentas
 - Criado pelo Vite
