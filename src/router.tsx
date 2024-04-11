@@ -1,12 +1,13 @@
 
 import { createBrowserRouter,  } from 'react-router-dom'
 
-import { HomePage } from './pages/HomePage'
-import { PublicChatsPage } from './pages/PublicChatsPage'
-import { MyChatsPage } from './pages/MyChatsPage'
-import { LoginPage } from './pages/LoginPage'
-import { RegisterPage } from './pages/RegisterPage'
+import { ProtectedRoute } from './components/ProtectedRoute'
 import { Layout } from './layout/Layout'
+import { HomePage } from './pages/HomePage'
+import { LoginPage } from './pages/LoginPage'
+import { MyChatsPage } from './pages/MyChatsPage'
+import { RegisterPage } from './pages/RegisterPage'
+import { PublicChatsPage } from './pages/PublicChatsPage'
 
 
 export const router = createBrowserRouter([
@@ -23,7 +24,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/my-chats',
-        element: <MyChatsPage />
+        element: <ProtectedRoute> <MyChatsPage /> </ProtectedRoute>
       },
       {
         path: '/my-chats/:chatId',
