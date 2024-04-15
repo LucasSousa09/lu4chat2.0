@@ -25,6 +25,17 @@ export function MyChatsPage(){
 
     const [ chatRooms, setChatRooms ] = useState<ChatRoom[]>([])
 
+    let roomName = null
+
+    if(chatRooms.length > 0){
+        roomName = chatRooms.map(rooms => {
+            if(rooms.id === chatId){
+                return rooms.name
+            }
+            return ""
+        }).filter(roomName => roomName !== "").toString()
+    }
+
     useEffect(() => {
         async function getUserRooms(){
             if(user){
@@ -36,32 +47,39 @@ export function MyChatsPage(){
         }
 
         getUserRooms()
-    },[user])
+    },[user, chatId])
+
 
     return (
         <div className={styles.myChatsContainer}>
-            <MyChatsSidebar chatRooms={
-                chatRooms.map(rooms =>({
-                    id: rooms.id,
-                    roomName: rooms.name,
-                    roomType: rooms.type,
-                    roomDescription: rooms.description,
-                    enterRoom: chatId
-                }))
-            } />
-            <div className={styles.messagesContainer}>
-                {
-                    chatId !== undefined && (
-                        <>
-                            {/* <MyChatsMessages 
-                                chatName={chatsDB.rooms[chatId].name} 
-                                roomMessagesId={chatsDB.rooms[chatId].messagesId}
-                                />
-                            <MyChatsMessageSender /> */}
-                        </>
-                    )
-                }
-            </div>
+            {
+                user && (
+                    <>
+                        <MyChatsSidebar chatRooms={
+                            chatRooms.map(rooms =>({
+                                id: rooms.id,
+                                roomName: rooms.name,
+                                roomType: rooms.type,
+                                roomDescription: rooms.description,
+                                enterRoom: chatId
+                            }))
+                        } />
+                        <div className={styles.messagesContainer}>
+                            {
+                                chatId !== undefined && (
+                                    <>                  
+                                        <MyChatsMessages 
+                                                chatName={roomName} 
+                                                roomMessagesId={chatId}
+                                            />
+                                        <MyChatsMessageSender />
+                                    </>
+                                )
+                            }
+                        </div>
+                    </>
+                )
+            }
         </div>
     )
 }
