@@ -65,8 +65,8 @@ export function Header(){
                     </button>
                     {
                         openChatOptions ? (
-                            <div className={styles.chatOptions}>
-                                <NavLink linkTo='/my-chats' >Minhas Conversas</NavLink>
+                            <div onClick={() => setOpenChatOptions(false)} className={styles.chatOptions}>
+                                <NavLink linkTo='/my-chats'>Minhas Conversas</NavLink>
                                 <button onClick={() => handleOpenModal("createRoom")}>Criar Conversa</button>
                                 <button onClick={() => handleOpenModal("enterRoom")}>Entrar na conversas</button>
                             </div>
@@ -91,5 +91,3 @@ export function Header(){
         </header>
     )
 }
-
-// Faltam os botões "Criar Sala" e "Entrar em Sala"

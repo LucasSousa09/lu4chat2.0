@@ -24,7 +24,7 @@
     background-color: #FFF;
     color: var(--primary-color);
 
-    padding: 12px 16px;
+    padding: 8px 16px;
 
     font-weight: 500;
     font-size: 1rem;
@@ -65,7 +65,7 @@
 
 .chatOptions {
     position: absolute;
-    top: 32px;
+    top: 44px;
     left: -65px;
 
     display: flex;
