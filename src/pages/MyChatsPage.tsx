@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { MyChatsSidebar } from "../components/MyChatsSidebar";
 import { MyChatsMessages } from "../components/MyChatsMessages";
@@ -10,6 +10,7 @@ import { api } from "../libs/axios";
 import styles from './MyChatsPage.module.css'
 
 import { UserContext } from "../contexts/UserContext";
+import { toast } from "react-toastify";
 
 type ChatRoom = {
     id: string; 
@@ -20,6 +21,8 @@ type ChatRoom = {
 
 export function MyChatsPage(){
     const { user } = useContext(UserContext)
+
+    const navigate = useNavigate()
 
     const { chatId } = useParams()
 
@@ -41,6 +44,11 @@ export function MyChatsPage(){
             if(user){
                 const { data: userRoomsData }: {data: {myRooms: ChatRoom[]}} = await api.post(`/get-user-rooms`, {userId: user.uid})
                 setChatRooms(userRoomsData.myRooms)
+
+                if(userRoomsData.myRooms.length === 0){
+                    toast.error("Você ainda não entrou em uma sala")
+                    navigate('/public-chats')
+                }
             }
 
             return
@@ -48,7 +56,6 @@ export function MyChatsPage(){
 
         getUserRooms()
     },[user, chatId])
-
 
     return (
         <div className={styles.myChatsContainer}>
@@ -68,11 +75,12 @@ export function MyChatsPage(){
                             {
                                 chatId !== undefined && (
                                     <>                  
-                                        <MyChatsMessages 
-                                                chatName={roomName} 
-                                                roomMessagesId={chatId}
-                                            />
-                                        <MyChatsMessageSender />
+                                        <MyChatsMessages
+                                            userId={user.uid}
+                                            chatName={roomName} 
+                                            roomMessagesId={chatId}
+                                        />
+                                        <MyChatsMessageSender senderId={user.uid} senderName={user.displayName || ""} chatId={chatId}/>
                                     </>
                                 )
                             }
