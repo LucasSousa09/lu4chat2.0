@@ -1,13 +1,16 @@
 import { z } from 'zod'
-import { ModalContext } from '../../contexts/ModalContext'
-import styles from './index.module.css'
-
-import { FormEvent, useContext, useRef, useState } from 'react'
-import { toast } from 'react-toastify'
-import { UserContext } from '../../contexts/UserContext'
-import { api } from '../../libs/axios'
 import { AxiosError } from 'axios'
+import { toast } from 'react-toastify'
+import { X } from '@phosphor-icons/react'
 import { useNavigate } from 'react-router-dom'
+import { FormEvent, useContext, useRef, useState } from 'react'
+
+import { UserContext } from '../../contexts/UserContext'
+import { ModalContext } from '../../contexts/ModalContext'
+
+import { api } from '../../libs/axios'
+
+import styles from './index.module.css'
 
 type FormDataProps = {
     "room-id": string,
@@ -89,6 +92,7 @@ export function EnterRoomModal(){
                 isModalOpen === "enterRoomModalIsOpen" && (
                     <div className={styles.modalContainer}>
                     <strong className={styles.form}>Entre em uma sala</strong>
+                    <button onClick={() => setIsModalOpen(null)}><X weight='bold'/></button>
                     
                     <form ref={formRef} className={styles.form} onSubmit={handleFormSubmit}>
                         <label htmlFor="room-id">Id da Sala</label>

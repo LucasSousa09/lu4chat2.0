@@ -1,12 +1,15 @@
-import { toast } from 'react-toastify'
-import { ModalContext } from '../../contexts/ModalContext'
-import { UserContext } from '../../contexts/UserContext'
-import styles from './index.module.css'
-
-import { FormEvent, useContext, useRef, useState } from 'react'
 import { z } from 'zod'
-import { api } from '../../libs/axios'
+import { toast } from 'react-toastify'
+import { X } from '@phosphor-icons/react'
 import { useNavigate } from 'react-router-dom'
+import { FormEvent, useContext, useRef, useState } from 'react'
+
+import { UserContext } from '../../contexts/UserContext'
+import { ModalContext } from '../../contexts/ModalContext'
+
+import { api } from '../../libs/axios'
+
+import styles from './index.module.css'
 
 type FormDataProps = {
     "room-name": string,
@@ -66,7 +69,7 @@ export function CreateRoomModal(){
                 if(res.status === 201){
                     toast.success("Sala criada com sucesso!")
                     setIsModalOpen(null)
-                    navigate(`/my-chats/${res.data.roomPath}`)
+                    navigate(`/my-chats/${res.data.roomId}`)
                 }
 
             }
@@ -91,6 +94,7 @@ export function CreateRoomModal(){
                 isModalOpen === "createRoomModalIsOpen" && (
                     <div className={styles.modalContainer}>
                         <strong className={styles.form}>Crie uma sala</strong>
+                        <button onClick={() => setIsModalOpen(null)}><X weight='bold'/></button>
                         
                         <form ref={formRef} className={styles.form} onSubmit={handleFormSubmit}>
                             <label htmlFor="room-name">Nome da Sala</label>
