@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { Info } from '@phosphor-icons/react';
 import { FirebaseError } from 'firebase/app';
 import { useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 
 import { auth, googleProvider } from '../libs/firebase-config';
 
@@ -51,6 +51,8 @@ export function RegisterPage(){
             })
 
            const authRes = await createUserWithEmailAndPassword(auth, email, password)
+
+           await updateProfile(authRes.user, {displayName: username})
 
            const res = await api.post("/create-user", {data: {userEmail: email, userName: username, userId: authRes.user.uid}})
            
