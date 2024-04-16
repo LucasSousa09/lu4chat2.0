@@ -1,46 +1,62 @@
+import { useEffect, useState } from 'react'
+import { onValue, ref } from 'firebase/database'
+
+import { database } from '../../libs/firebase-config'
+
 import styles from './MyChatsMessages.module.css'
 
-import mockDB from '../../../mockDB.json'
-import { useEffect, useState } from 'react'
-
 type MyChatsMessages = {
-    chatName: string
-    roomMessagesId: string
+    chatName: string | null
+    roomMessagesId: string,
+    userId: string
 }
 
 type Message = {
-    sender: string,
+    senderName: string,
     senderId: string,
-    content: string,
+    message: string,
     createdAt: string,
 }
 
 
-export function MyChatsMessages({roomMessagesId, chatName}: MyChatsMessages){
-    const [messages, setMessages] = useState<Message[]>([])
+export function MyChatsMessages({roomMessagesId, chatName, userId}: MyChatsMessages){
 
-    const messagesArray = Object.values(mockDB.messages[roomMessagesId])
+    console.log(userId)
+
+    const [messages, setMessages] = useState<Message[]>([])
+    const messagesRef = ref(database, roomMessagesId + '/messages')
 
     useEffect(() => {
-        setMessages(messagesArray)
+        onValue(messagesRef, (snapshot) => {
+            const data = snapshot.val()
+            
+            const messagesArray: Message[] = Object.values(data)
+
+            setMessages(messagesArray.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()))
+        })
     },[])
 
-    console.log(messages)
-
     return (
-        <div className={styles.messagesContainer}>
-            <h1>{chatName}</h1>
-
+        <>
             {
-                messages.map(message => (
-                    <div className={styles.message}>
-                        <strong>{message.sender}</strong>
+                chatName !== null ? (
+                    <div className={styles.messagesContainer}>
+                        <h1>{chatName}</h1>
 
-                        <span>{message.content}</span>
+                        {  messages.length > 0 &&
+                            messages.map(message => (
+                                <div key={message.createdAt} className={message.senderId === userId ? `${styles.message + " " + styles.messageSender}` : styles.message}>
+                                    <strong>{message.senderName}</strong>
+
+                                    <span>{message.message}</span>
+                                </div>
+                            ))
+                        }
                     </div>
-                ))
-            }
-
-        </div>
+                ) : (
+                    <div className={styles.messagesContainer}></div>
+                )     
+            }            
+        </>
     )
 }

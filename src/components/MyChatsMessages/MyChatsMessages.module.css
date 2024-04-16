@@ -31,7 +31,7 @@
     border-radius: 4px    
 }
 
-.message:nth-child(odd){
+.message:nth-child(odd):not(.messageSender){
     color: var(--primary-darker);
     background-color: transparent;
     border: 1px solid var(--primary-darker)
