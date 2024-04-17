@@ -50,7 +50,8 @@ export function MyChatsMessageSender({chatId, senderId, senderName}: MyChatsMess
                                    }
             )}/>
             <button type="submit" disabled={sendingMessage.isSending}>
-                Enviar
+                <span>Enviar</span>
+                
                 <PaperPlaneRight weight="fill" size={20}/>
             </button>
         </form>
