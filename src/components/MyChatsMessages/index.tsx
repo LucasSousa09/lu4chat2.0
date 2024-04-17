@@ -4,6 +4,8 @@ import { onValue, ref } from 'firebase/database'
 import { database } from '../../libs/firebase-config'
 
 import styles from './MyChatsMessages.module.css'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 type MyChatsMessages = {
     chatName: string | null
@@ -18,23 +20,76 @@ type Message = {
     createdAt: string,
 }
 
-
 export function MyChatsMessages({roomMessagesId, chatName, userId}: MyChatsMessages){
-
-    console.log(userId)
+    const { chatId } = useParams()
 
     const [messages, setMessages] = useState<Message[]>([])
-    const messagesRef = ref(database, roomMessagesId + '/messages')
+    const roomRef = ref(database, roomMessagesId)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
-        onValue(messagesRef, (snapshot) => {
-            const data = snapshot.val()
-            
-            const messagesArray: Message[] = Object.values(data)
+        setMessages([])
 
-            setMessages(messagesArray.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()))
+        onValue(roomRef, (snapshot) => {
+
+            if(!snapshot.exists()){
+                navigate('/my-chats')
+                return
+            }
+
+            const data = snapshot.val()
+
+            if(data.roomType === "public" && data.messages === undefined){
+                return
+            }
+
+            if(data.roomType === "public" && data.messages !== undefined){
+                const messagesArray: Message[] = Object.values(data.messages)
+                setMessages(messagesArray.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()))
+                
+                return
+            }
+
+            //If the room is private
+
+            if(data.allowedUsers === undefined){
+                if(data.roomOwner !== userId){
+                    toast.error("Você não pode entrar nessa sala")
+                    navigate('/my-chats')
+                    
+                    return
+                }
+
+                if(data.messages !== undefined){
+                    const messagesArray: Message[] = Object.values(data.messages)
+                    setMessages(messagesArray.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()))
+    
+                    return
+                }
+
+                return
+            }
+
+
+            const allowedUsersArray: {id: string}[] = Object.values(data.allowedUsers)
+
+            const userFound = allowedUsersArray.find(user => user.id === userId)
+
+            if(userFound === undefined && data.roomOwner !== userId){
+                toast.error("Você não pode entrar nessa sala")
+                navigate("/my-chats")
+                return
+            }
+            
+            if(data.messages !== undefined){
+                const messagesArray: Message[] = Object.values(data.messages)
+                setMessages(messagesArray.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()))
+
+                return
+            }
         })
-    },[])
+    },[chatId])
 
     return (
         <>
