@@ -6,13 +6,37 @@
     color: var(--primary-color);
 
     padding: 24px;
+
+    overflow-y: auto;
 }
 
-.messagesContainer > h1 {
-    font-size: 24px;
-    font-weight: 400;
+.messagesContainer > header {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
 
     margin-bottom: 32px;
+}
+
+.messagesContainer > header > button {
+    background-color: transparent;
+
+    border: none;
+
+    color: var(--primary-color);
+
+    display: none;
+}
+
+.messagesContainer > header > button > svg{
+    width: 20px;
+    height: 20px;
+}
+
+.messagesContainer > header > h1 {
+    font-size: 24px;
+    font-weight: 400;
 }
 
 .message{
@@ -42,4 +66,10 @@
     background-color: #8DB8D8;
 
     margin-left: auto;
+}
+
+@media(max-width:1024px){
+    .messagesContainer > header > button {
+        display: block;
+    }
 }
