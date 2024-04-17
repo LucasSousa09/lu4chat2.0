@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
+import { useContext, useEffect, useState } from 'react'
 import { onValue, ref } from 'firebase/database'
+import { ArrowLeft } from '@phosphor-icons/react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { database } from '../../libs/firebase-config'
 
 import styles from './MyChatsMessages.module.css'
-import { useNavigate, useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import { SidebarContext } from '../../contexts/SidebarContext'
 
 type MyChatsMessages = {
     chatName: string | null
@@ -22,6 +24,8 @@ type Message = {
 
 export function MyChatsMessages({roomMessagesId, chatName, userId}: MyChatsMessages){
     const { chatId } = useParams()
+
+    const { setMyChatSidebarIsOpen } = useContext(SidebarContext)
 
     const [messages, setMessages] = useState<Message[]>([])
     const roomRef = ref(database, roomMessagesId)
@@ -96,7 +100,10 @@ export function MyChatsMessages({roomMessagesId, chatName, userId}: MyChatsMessa
             {
                 chatName !== null ? (
                     <div className={styles.messagesContainer}>
-                        <h1>{chatName}</h1>
+                        <header>
+                            <button onClick={() => setMyChatSidebarIsOpen(state => !state)}> <ArrowLeft weight='bold'/> </button>
+                            <h1>{chatName}</h1>
+                        </header>
 
                         {  messages.length > 0 &&
                             messages.map(message => (
