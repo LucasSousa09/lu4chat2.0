@@ -1,6 +1,9 @@
+import { useContext } from 'react';
 import { ChatRoomInfo } from '../ChatRoomInfo'
 
 import styles from './MyChatsSidebar.module.css'
+import { SidebarContext } from '../../contexts/SidebarContext';
+import { X } from '@phosphor-icons/react';
 
 type MyChatsSidebarProps = {
     chatRooms: {
@@ -14,8 +17,17 @@ type MyChatsSidebarProps = {
 }
 
 export function MyChatsSidebar({chatRooms}: MyChatsSidebarProps){
+    const { myChatSidebarIsOpen, setMyChatSidebarIsOpen } = useContext(SidebarContext)
+
     return (
-        <div className={styles.sidebar}>
+        <div className={`${styles.sidebar} ${myChatSidebarIsOpen === true && styles.active}`}>
+            {
+                myChatSidebarIsOpen === true && (
+                    <button onClick={() => setMyChatSidebarIsOpen(false)}>
+                        <X weight="bold"/>
+                    </button>
+                )
+            }
             {
                 chatRooms.map(rooms => (
                     <ChatRoomInfo 
