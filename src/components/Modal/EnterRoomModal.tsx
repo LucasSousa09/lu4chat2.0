@@ -18,7 +18,7 @@ type FormDataProps = {
 }
 
 const enterRoomSchema = z.object({
-    "room-id": z.string().length(20, "O id da sala deve conter 20 caracteres"),
+    "room-id": z.string().min(20, "O id da sala deve conter pelo menos 20 caracteres"),
     "room-password": z.string()
         .min(6, 'A Senha deve conter pelo menos 6 caracteres')
         .regex(/\d/, "A senha deve conter pelo menos um número")
