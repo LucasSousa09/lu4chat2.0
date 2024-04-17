@@ -9,7 +9,6 @@ import { MyChatsPage } from './pages/MyChatsPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { PublicChatsPage } from './pages/PublicChatsPage'
 
-
 export const router = createBrowserRouter([
   {
     element: <Layout/>,
@@ -28,7 +27,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/my-chats/:chatId',
-        element: <MyChatsPage />
+        element: <ProtectedRoute><MyChatsPage /></ProtectedRoute>
       },
       {
         path: '/login',
