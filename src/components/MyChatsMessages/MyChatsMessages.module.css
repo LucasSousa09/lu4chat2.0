@@ -21,12 +21,7 @@
 
 .messagesContainer > header > button {
     background-color: transparent;
-
     border: none;
-
-    color: var(--primary-color);
-
-    display: none;
 }
 
 .messagesContainer > header > button > svg{
@@ -37,6 +32,15 @@
 .messagesContainer > header > h1 {
     font-size: 24px;
     font-weight: 400;
+}
+
+.openMyChatsSidebarButton {
+    color: var(--primary-color);
+    display: none;
+}
+
+.deleteRoomButton {
+    color: var(--warning);
 }
 
 .message{
@@ -68,8 +72,60 @@
     margin-left: auto;
 }
 
+.warningModal {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+
+    transform: translate(50%, -50%);
+
+    border-radius: 4px;
+    padding: 1rem;
+
+    width: fit-content;
+
+    color: var(--warning);
+    background: #FFF;
+    box-shadow: 0 0 0px 2px var(--warning);
+}
+
+.warningModal > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+
+    margin-top: 1rem;
+}
+
+.warningModal > div > button {
+    padding: 8px 12px;
+    font-weight: 700;
+
+    border-radius: 4px;
+}
+
+.warningModal > div > button:hover {
+    filter: brightness(0.8);
+
+    transition: .2s ease;
+}
+
+.warningModal > div > button:first-of-type {
+    border: 1px solid var(--warning);
+    color: var(--warning);
+    background-color: #FFF;
+}
+
+.warningModal > div > button:last-of-type {
+    border: none;
+    background-color: var(--warning);
+    color: #FFF;
+}
+
 @media(max-width:1024px){
-    .messagesContainer > header > button {
+    .openMyChatsSidebarButton {
         display: block;
     }
+    
 }
